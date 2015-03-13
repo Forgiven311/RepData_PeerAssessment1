@@ -8,10 +8,32 @@ output:
 
 ## Loading and preprocessing the data
 
+Showing code that is required to load the data into the directory
+```{r, echo = TRUE}
+activitydf <- read.csv('~/Downloads/activity.csv', sep = ',', header = TRUE)
+```
+Good to see if the data has actually loaded
+```{r, echo = TRUE}
+head(activitydf)
+```
 
+Then we take time to view the structure of the loaded data
+```{r, echo = TRUE}
+str(activitydf)
+```
 
 ## What is mean total number of steps taken per day?
-
+##### Make a histogram of the total number of steps taken each day
+We need to load the dplyr package to so as to access the group_by function which will help us group the data by date
+```{r, echo = TRUE}
+library(dplyr)
+```
+Then we group the data by date, and be sure to change the data type of the date variable to date
+```{r, echo = TRUE}
+perday <- activitydf %>%
+        group_by(date = as.Date(date)) %>%
+        summarise(steps = sum(steps, na.rm = TRUE))
+```
 
 
 ## What is the average daily activity pattern?
