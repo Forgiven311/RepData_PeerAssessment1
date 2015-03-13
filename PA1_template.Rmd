@@ -21,20 +21,25 @@ Then we take time to view the structure of the loaded data
 ```{r, echo = TRUE}
 str(activitydf)
 ```
-
 ## What is mean total number of steps taken per day?
-##### Make a histogram of the total number of steps taken each day
+
+Make a histogram of the total number of steps taken each day
+
 We need to load the dplyr package to so as to access the group_by function which will help us group the data by date
 ```{r, echo = TRUE}
 library(dplyr)
 ```
-Then we group the data by date, and be sure to change the data type of the date variable to date
+
+To calculate the total number of steps taken per day, we first group the data by date, then summarise it with the sum function.
 ```{r, echo = TRUE}
 perday <- activitydf %>%
         group_by(date = as.Date(date)) %>%
         summarise(steps = sum(steps, na.rm = TRUE))
 ```
-
+We can then plot a histogram after grouping the data
+```{r, echo = TRUE}
+hist(perday$steps, main = "Total Number of Steps Taken Per Day", xlab = "Steps")     
+```
 
 ## What is the average daily activity pattern?
 
