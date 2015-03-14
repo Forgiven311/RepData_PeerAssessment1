@@ -51,7 +51,7 @@ median(perday$steps, na.rm = TRUE)
 
 ## What is the average daily activity pattern?
 
-####### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+###### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 First we group the data by interval, then summarise it on the steps variable by its mean and save it into a new object
 ```{r, echo = TRUE}
@@ -72,9 +72,49 @@ ggplot(avgsteps, aes(interval, steps)) + geom_line() +
         ylab("Average Number of steps taken") + 
         theme(panel.grid.minor = element_line(colour = "blue", linetype = "dotted"
 ```
-
+Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+```{r, echo = TRUE}
+avgsteps$interval[which.max(avgsteps$steps)]
+```
 
 ## Imputing missing values
+
+###### Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+```{r, echo = TRUE}
+sum(is.na(activitydf$steps))
+sum(is.na(activitydf$date))
+sum(is.na(activitydf$interval))
+```
+Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. 
+For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+```{r, echo = TRUE}
+newsteps <- data.frame(activitydf$steps)
+newsteps[is.na(newsteps),] <- ceiling(tapply(X=activitydf$steps,INDEX=activitydf$interval,FUN=mean,na.rm=TRUE))
+```
+Create a new dataset that is equal to the original dataset but with the missing data filled in.
+```{r, echo = TRUE}
+newdf <- cbind(newsteps, activitydf[,2:3])
+colnames(newdf) <- c("Steps", "Date", "Interval")
+```
+Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number 
+of steps taken per day.
+
+Frist group by date and summariseon steps
+```{r, echo = TRUE}
+newdata <- newdf %>%
+        group_by(Date = as.Date(Date)) %>%
+        summarise(Steps = sum(Steps, na.rm = TRUE))
+```
+
+then plot the hist
+```{r, echo = TRUE}
+hist(newdata$Steps, main = "Number of Steps Taken Per Day", xlab = "Steps")     
+```
+
+Do these values  differ from the estimates from the first part of the assignment? 
+
+
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
 
