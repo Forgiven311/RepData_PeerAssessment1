@@ -110,12 +110,40 @@ then plot the hist
 ```{r, echo = TRUE}
 hist(newdata$Steps, main = "Number of Steps Taken Per Day", xlab = "Steps")     
 ```
+After which, we calculate and report the mean and median total number of steps taken per day.
+```{r, echo = TRUE}
+mean(newdata$Steps)
+median(newdata$Steps)
+```
+###### Do these values  differ from the estimates from the first part of the assignment? 
+Yes, as shown above and below the values do differ
 
-Do these values  differ from the estimates from the first part of the assignment? 
+2nd mean  10784.92 & 1st Mean 9354.23
+2nd meadian 10909 &   1st meadian 10395
 
-
-What is the impact of imputing missing data on the estimates of the total daily number of steps?
-
+###### What is the impact of imputing missing data on the estimates of the total daily number of steps?
+There is some slight difference in the distribution of the data however the impact is not so big
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+###### Create a new factor variable in the dataset with two levels – “weekday” and “weekend”  
+indicating whether a given date is a weekday or weekend day.
+
+We shall use the lubridate package to help subset between weekday and weekend
+```{r, echo = TRUE}
+library(lubridate)
+```
+Then we create a new collumn using the mutate fuction from the dplyr package to help create the factor variable
+```{r, echo = TRUE}
+newdf4 <-newdf %>% 
+        mutate(DayType = as.factor(ifelse(wday(Date) %in% c(1,7),"weekend","weekday")))
+```
+
+
+
+
+
+
+
+
