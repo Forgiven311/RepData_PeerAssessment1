@@ -41,8 +41,36 @@ We can then plot a histogram after grouping the data
 hist(perday$steps, main = "Total Number of Steps Taken Per Day", xlab = "Steps")     
 ```
 
+The we can calculate and report the mean and median of the total number of steps taken per day
+
+```{r, echo = TRUE}
+mean(perday$steps, na.rm = TRUE)
+median(perday$steps, na.rm = TRUE)
+```
+
+
 ## What is the average daily activity pattern?
 
+Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+First we group the data by interval, then summarise it on the steps variable by its mean and save it into a new object
+```{r, echo = TRUE}
+avgsteps <- activitydf %>%
+        group_by(interval) %>%
+        summarise(steps = mean(steps, na.rm = TRUE))
+```
+From here its easy to plot the graph of the result in the new object.
+But first we call the plotting graph device ggplot
+```{r, echo = TRUE}
+library(ggplot2)
+```
+Then we are able to plot the result using the ggplot graph ploting device
+```{r, echo = TRUE}
+ggplot(avgsteps, aes(interval, steps)) + geom_line() + 
+        labs(title = "Average Daily Activity Pattern" ) +
+        xlab("5-Minute Intervals") + 
+        ylab("Average Number of steps taken") + 
+        theme(panel.grid.minor = element_line(colour = "blue", linetype = "dotted"
+```
 
 
 ## Imputing missing values
