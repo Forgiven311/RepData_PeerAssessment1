@@ -139,6 +139,30 @@ Then we create a new collumn using the mutate fuction from the dplyr package to 
 newdf4 <-newdf %>% 
         mutate(DayType = as.factor(ifelse(wday(Date) %in% c(1,7),"weekend","weekday")))
 ```
+###### Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average 
+number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository
+to see an example of what this plot should look like using simulated data.
+
+We shall use the lattice plotting device
+```{r, echo = TRUE}
+library("lattice")
+```
+
+Then we create a new object in which we group the and then summarise it on the means of the steps variable
+
+```{r, echo = TRUE}
+newdf5 <- newdf4 %>% 
+group_by(DayType,Interval) %>%
+        summarise(avgsteps=mean(Steps))
+```
+
+The result of the above object is what we plot in the xyplot to show a distinction between weekdays and weekends steps
+```{r, echo = TRUE}
+with (newdf5, 
+      xyplot(avgsteps ~ Interval|DayType, type="l", 
+             ylab="Number of steps",layout=c(1,2)))
+```
+
 
 
 
